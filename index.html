@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-image: url('freefire.jpg') ;
+      background-image: url('freefire.jpg');
       background-size: cover;
       background-position: center;
       margin: 0;
@@ -23,21 +23,20 @@
     }
 
     table {
-      width: 90%;
-      max-width: 900px;
+      width: 98%;
+      max-width: 1200px;
       margin: auto;
       border-collapse: collapse;
-      background: url("WhatsApp\ Image\ 2025-07-23\ at\ 12.55.01_b64c9b89.jpg") center no-repeat;
+      background: url("WhatsApp\\ Image\\ 2025-07-23\\ at\\ 12.55.01_b64c9b89.jpg") center no-repeat;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow:2px 2px 5px white, -2px -2px 5px white;
+      box-shadow: 2px 2px 5px white, -2px -2px 5px white;
     }
 
     th, td {
       padding: 12px;
       text-align: center;
       border-bottom: 1px solid #444;
-      
     }
 
     th {
@@ -55,9 +54,6 @@
       box-shadow: inset -4px -4px 5px rgb(19, 136, 175), 3px 3px 5px rgb(0, 0, 0);
       background-color: rgb(206, 232, 241);
     }
-
-
-
 
     .btn-container {
       text-align: center;
@@ -89,6 +85,9 @@
       <tr>
         <th>Team Name</th>
         <th>Kills</th>
+        <th>Matches Played</th>
+        <th>Booyah Points</th>
+        <th>Top Place</th>
         <th>Total Points</th>
       </tr>
     </thead>
@@ -103,18 +102,18 @@
 
   <script>
     const teams = [
-      { name: "VISHNU NANI ESP", kills: 30, total: 83 },
-      { name: "TEAM RITHVIKA", kills: 23, total: 59 },
-      { name: "VFX × PRIME", kills: 23, total: 53 },
-      { name: "TEAM NSB", kills: 27, total: 44 },
-      { name: "VFX WARRIORS", kills: 19, total: 43 },
-      { name: "TEAM VSK", kills: 19, total: 38 },
-      { name: "TEAM WARRIORS", kills: 18, total: 38 },
-      { name: "TPL ESPORTS", kills: 18, total: 30 },
-      { name: "TPL WARRIORS", kills: 6, total: 12 },
-      { name: "SPO ESPORTS", kills: 5, total: 10 },
-      { name: "GBL ESPORTS", kills: 0, total: 0 },
-      { name: "VATTAKUKKALI TEAM", kills: 0, total: 0 }
+      { name: "VISHNU NANI ESP", kills: 30, matches: 6, booyah: 10, topPlace: 1, total: 83 },
+      { name: "TEAM RITHVIKA", kills: 23, matches: 5, booyah: 8, topPlace: 2, total: 59 },
+      { name: "VFX × PRIME", kills: 23, matches: 5, booyah: 7, topPlace: 3, total: 53 },
+      { name: "TEAM NSB", kills: 27, matches: 4, booyah: 4, topPlace: 4, total: 44 },
+      { name: "VFX WARRIORS", kills: 19, matches: 4, booyah: 5, topPlace: 5, total: 43 },
+      { name: "TEAM VSK", kills: 19, matches: 4, booyah: 4, topPlace: 6, total: 38 },
+      { name: "TEAM WARRIORS", kills: 18, matches: 3, booyah: 4, topPlace: 7, total: 38 },
+      { name: "TPL ESPORTS", kills: 18, matches: 3, booyah: 2, topPlace: 8, total: 30 },
+      { name: "TPL WARRIORS", kills: 6, matches: 2, booyah: 1, topPlace: 9, total: 12 },
+      { name: "SPO ESPORTS", kills: 5, matches: 2, booyah: 1, topPlace: 10, total: 10 },
+      { name: "GBL ESPORTS", kills: 0, matches: 0, booyah: 0, topPlace: 11, total: 0 },
+      { name: "VATTAKUKKALI TEAM", kills: 0, matches: 0, booyah: 0, topPlace: 12, total: 0 }
     ];
 
     function renderTable() {
@@ -126,6 +125,9 @@
           <tr>
             <td><input type="text" value="${team.name}" id="name-${i}"></td>
             <td><input type="number" value="${team.kills}" id="kills-${i}"></td>
+            <td><input type="number" value="${team.matches}" id="matches-${i}"></td>
+            <td><input type="number" value="${team.booyah}" id="booyah-${i}"></td>
+            <td><input type="number" value="${team.topPlace}" id="topPlace-${i}"></td>
             <td><input type="number" value="${team.total}" id="total-${i}"></td>
           </tr>
         `;
@@ -136,10 +138,13 @@
       teams.forEach((team, i) => {
         team.name = document.getElementById(`name-${i}`).value || `Team ${i + 1}`;
         team.kills = parseInt(document.getElementById(`kills-${i}`).value) || 0;
+        team.matches = parseInt(document.getElementById(`matches-${i}`).value) || 0;
+        team.booyah = parseInt(document.getElementById(`booyah-${i}`).value) || 0;
+        team.topPlace = parseInt(document.getElementById(`topPlace-${i}`).value) || 0;
         team.total = parseInt(document.getElementById(`total-${i}`).value) || 0;
       });
 
-      // Sort by total points descending, then kills descending
+      // Sort by total points, then kills
       teams.sort((a, b) => {
         if (b.total !== a.total) return b.total - a.total;
         return b.kills - a.kills;
