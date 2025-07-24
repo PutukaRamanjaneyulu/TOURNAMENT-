@@ -25,9 +25,9 @@
     table {
       width: 98%;
       max-width: 1200px;
-      margin: auto;
+      margin: 20px auto;
       border-collapse: collapse;
-      background: rgba(0, 0, 0, 0.4);
+      background: url("WhatsApp\\ Image\\ 2025-07-23\\ at\\ 12.55.01_b64c9b89.jpg") center no-repeat;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 2px 2px 5px white, -2px -2px 5px white;
@@ -37,19 +37,28 @@
       padding: 12px;
       text-align: center;
       border-bottom: 1px solid #444;
+      color:#fff;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: large;
+      font-weight: bold;
+      
     }
 
     th {
       background: transparent;
+      background-color:#000;
     }
 
     input[type="text"],
     input[type="number"] {
-      width: 90%;
+      width: 75%;
       padding: 6px;
       border: none;
       border-radius: 4px;
       text-align: center;
+      font-family: 'Times New Roman', Times, serif;
+      font-style: normal;
+      font-size: large;
       font-weight: bold;
       box-shadow: inset -4px -4px 5px rgb(19, 136, 175), 3px 3px 5px rgb(0, 0, 0);
       background-color: rgb(206, 232, 241);
@@ -57,7 +66,7 @@
 
     .btn-container {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     button {
@@ -69,11 +78,18 @@
       border-radius: 5px;
       cursor: pointer;
       transition: 0.3s ease;
-      margin: 8px;
+      margin: 5px;
     }
 
     button:hover {
       background-color: #0097a7;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-top: 40px;
+      text-shadow: 2px 2px 4px #000;
     }
   </style>
 </head>
@@ -81,97 +97,127 @@
 
   <h1>BR SQUAD TOURNAMENT - LEADERBOARD</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Team Name</th>
-        <th>Kills</th>
-        <th>Matches Played</th>
-        <th>Booyah Points</th>
-        <th>Top Place</th>
-        <th>Total Points</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      <!-- JavaScript inserts table rows here -->
-    </tbody>
-  </table>
+  <div>
+    <h2 class="section-title">Group A</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Team Name</th>
+          <th>Kills</th>
+          <th>Matches Played</th>
+          <th>Booyah Points</th>
+          <th>Top Place</th>
+          <th>Total Points</th>
+        </tr>
+      </thead>
+      <tbody id="table-body-1"></tbody>
+    </table>
+    <div class="btn-container">
+      <button onclick="applyUpdates(1)">Update & Sort</button>
+      <button onclick="saveChanges(1)">Save Changes</button>
+    </div>
+  </div>
 
-  <div class="btn-container">
-    <button onclick="applyUpdates()">Update & Sort</button>
-    <button onclick="saveChanges()">Save Changes</button>
+  <div>
+    <h2 class="section-title">Group B</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Team Name</th>
+          <th>Kills</th>
+          <th>Matches Played</th>
+          <th>Booyah Points</th>
+          <th>Top Place</th>
+          <th>Total Points</th>
+        </tr>
+      </thead>
+      <tbody id="table-body-2"></tbody>
+    </table>
+    <div class="btn-container">
+      <button onclick="applyUpdates(2)">Update & Sort</button>
+      <button onclick="saveChanges(2)">Save Changes</button>
+    </div>
   </div>
 
   <script>
-    let defaultTeams = [
-      { name: "VISHNU NANI ESP", kills: 30, matches: 6, booyah: 10, topPlace: 1, total: 83 },
-      { name: "TEAM RITHVIKA", kills: 23, matches: 5, booyah: 8, topPlace: 2, total: 59 },
-      { name: "VFX × PRIME", kills: 23, matches: 5, booyah: 7, topPlace: 3, total: 53 },
-      { name: "TEAM NSB", kills: 27, matches: 4, booyah: 4, topPlace: 4, total: 44 },
-      { name: "VFX WARRIORS", kills: 19, matches: 4, booyah: 5, topPlace: 5, total: 43 },
-      { name: "TEAM VSK", kills: 19, matches: 4, booyah: 4, topPlace: 6, total: 38 },
-      { name: "TEAM WARRIORS", kills: 18, matches: 3, booyah: 4, topPlace: 7, total: 38 },
-      { name: "TPL ESPORTS", kills: 18, matches: 3, booyah: 2, topPlace: 8, total: 30 },
-      { name: "TPL WARRIORS", kills: 6, matches: 2, booyah: 1, topPlace: 9, total: 12 },
-      { name: "SPO ESPORTS", kills: 5, matches: 2, booyah: 1, topPlace: 10, total: 10 },
-      { name: "GBL ESPORTS", kills: 0, matches: 0, booyah: 0, topPlace: 11, total: 0 },
-      { name: "VATTAKUKKALI TEAM", kills: 0, matches: 0, booyah: 0, topPlace: 12, total: 0 }
-    ];
-
-    let teams = [];
-
-    function loadSavedData() {
-      const saved = localStorage.getItem("savedTeams");
-      if (saved) {
-        teams = JSON.parse(saved);
-      } else {
-        teams = [...defaultTeams];
+    // Create 12 teams with default values
+    function createDefaultTeams(groupLabel) {
+      const teams = [];
+      for (let i = 0; i < 12; i++) {
+        teams.push({
+          name: `${groupLabel} Team ${i + 1}`,
+          kills: 0,
+          matches: 0,
+          booyah: 0,
+          topPlace: 0,
+          total: 0
+        });
       }
+      return teams;
     }
 
-    function renderTable() {
-      const tbody = document.getElementById("table-body");
-      tbody.innerHTML = "";
+    let teams1 = createDefaultTeams("A");
+    let teams2 = createDefaultTeams("B");
 
+    function renderTable(teams, tableId) {
+      const tbody = document.getElementById(`table-body-${tableId}`);
+      tbody.innerHTML = "";
       teams.forEach((team, i) => {
         tbody.innerHTML += `
           <tr>
-            <td><input type="text" value="${team.name}" id="name-${i}"></td>
-            <td><input type="number" value="${team.kills}" id="kills-${i}"></td>
-            <td><input type="number" value="${team.matches}" id="matches-${i}"></td>
-            <td><input type="number" value="${team.booyah}" id="booyah-${i}"></td>
-            <td><input type="number" value="${team.topPlace}" id="topPlace-${i}"></td>
-            <td><input type="number" value="${team.total}" id="total-${i}"></td>
+            <td><input type="text" value="${team.name}" id="name-${tableId}-${i}"></td>
+            <td><input type="number" value="${team.kills}" id="kills-${tableId}-${i}"></td>
+            <td><input type="number" value="${team.matches}" id="matches-${tableId}-${i}"></td>
+            <td><input type="number" value="${team.booyah}" id="booyah-${tableId}-${i}"></td>
+            <td><input type="number" value="${team.topPlace}" id="topPlace-${tableId}-${i}"></td>
+            <td><input type="number" value="${team.total}" id="total-${tableId}-${i}"></td>
           </tr>
         `;
       });
     }
 
-    function applyUpdates() {
-      teams.forEach((team, i) => {
-        team.name = document.getElementById(`name-${i}`).value || `Team ${i + 1}`;
-        team.kills = parseInt(document.getElementById(`kills-${i}`).value) || 0;
-        team.matches = parseInt(document.getElementById(`matches-${i}`).value) || 0;
-        team.booyah = parseInt(document.getElementById(`booyah-${i}`).value) || 0;
-        team.topPlace = parseInt(document.getElementById(`topPlace-${i}`).value) || 0;
-        team.total = parseInt(document.getElementById(`total-${i}`).value) || 0;
+    function applyUpdates(tableId) {
+      let teamArray = tableId === 1 ? teams1 : teams2;
+      teamArray.forEach((team, i) => {
+        team.name = document.getElementById(`name-${tableId}-${i}`).value || `Team ${i + 1}`;
+        team.kills = parseInt(document.getElementById(`kills-${tableId}-${i}`).value) || 0;
+        team.matches = parseInt(document.getElementById(`matches-${tableId}-${i}`).value) || 0;
+        team.booyah = parseInt(document.getElementById(`booyah-${tableId}-${i}`).value) || 0;
+        team.topPlace = parseInt(document.getElementById(`topPlace-${tableId}-${i}`).value) || 0;
+        team.total = parseInt(document.getElementById(`total-${tableId}-${i}`).value) || 0;
       });
 
-      // Sort: total points desc, then kills desc
-      teams.sort((a, b) => b.total - a.total || b.kills - a.kills);
+      teamArray.sort((a, b) => {
+        if (b.total !== a.total) return b.total - a.total;
+        return b.kills - a.kills;
+      });
 
-      renderTable();
+      renderTable(teamArray, tableId);
     }
 
-    function saveChanges() {
-      applyUpdates(); // make sure latest input is saved
-      localStorage.setItem("savedTeams", JSON.stringify(teams));
-      alert("✅ Changes saved successfully!");
+    function saveChanges(tableId) {
+      applyUpdates(tableId);
+      const data = tableId === 1 ? teams1 : teams2;
+      localStorage.setItem(`teamsData${tableId}`, JSON.stringify(data));
+      alert(`Changes for Group ${tableId === 1 ? 'A' : 'B'} saved!`);
     }
 
-    // On page load
-    loadSavedData();
-    renderTable();
+    function loadSavedData(tableId) {
+      const saved = localStorage.getItem(`teamsData${tableId}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          if (tableId === 1) teams1 = parsed;
+          else teams2 = parsed;
+        }
+      }
+    }
+
+    // Load and render both tables
+    loadSavedData(1);
+    loadSavedData(2);
+    renderTable(teams1, 1);
+    renderTable(teams2, 2);
   </script>
 </body>
 </html>
