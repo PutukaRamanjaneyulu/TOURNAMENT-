@@ -27,7 +27,7 @@
       max-width: 1200px;
       margin: auto;
       border-collapse: collapse;
-      background: url("WhatsApp\\ Image\\ 2025-07-23\\ at\\ 12.55.01_b64c9b89.jpg") center no-repeat;
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 2px 2px 5px white, -2px -2px 5px white;
@@ -45,7 +45,7 @@
 
     input[type="text"],
     input[type="number"] {
-      width: 75%;
+      width: 90%;
       padding: 6px;
       border: none;
       border-radius: 4px;
@@ -69,7 +69,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: 0.3s ease;
-      margin: 5px;
+      margin: 8px;
     }
 
     button:hover {
@@ -93,7 +93,7 @@
       </tr>
     </thead>
     <tbody id="table-body">
-      <!-- Rows inserted by JS -->
+      <!-- JavaScript inserts table rows here -->
     </tbody>
   </table>
 
@@ -103,7 +103,7 @@
   </div>
 
   <script>
-    let teams = [
+    let defaultTeams = [
       { name: "VISHNU NANI ESP", kills: 30, matches: 6, booyah: 10, topPlace: 1, total: 83 },
       { name: "TEAM RITHVIKA", kills: 23, matches: 5, booyah: 8, topPlace: 2, total: 59 },
       { name: "VFX × PRIME", kills: 23, matches: 5, booyah: 7, topPlace: 3, total: 53 },
@@ -118,13 +118,14 @@
       { name: "VATTAKUKKALI TEAM", kills: 0, matches: 0, booyah: 0, topPlace: 12, total: 0 }
     ];
 
+    let teams = [];
+
     function loadSavedData() {
       const saved = localStorage.getItem("savedTeams");
       if (saved) {
-        const savedTeams = JSON.parse(saved);
-        if (Array.isArray(savedTeams)) {
-          teams = savedTeams;
-        }
+        teams = JSON.parse(saved);
+      } else {
+        teams = [...defaultTeams];
       }
     }
 
@@ -156,21 +157,19 @@
         team.total = parseInt(document.getElementById(`total-${i}`).value) || 0;
       });
 
-      teams.sort((a, b) => {
-        if (b.total !== a.total) return b.total - a.total;
-        return b.kills - a.kills;
-      });
+      // Sort: total points desc, then kills desc
+      teams.sort((a, b) => b.total - a.total || b.kills - a.kills);
 
       renderTable();
     }
 
     function saveChanges() {
-      applyUpdates(); // update latest data
+      applyUpdates(); // make sure latest input is saved
       localStorage.setItem("savedTeams", JSON.stringify(teams));
-      alert("Changes saved successfully!");
+      alert("✅ Changes saved successfully!");
     }
 
-    // Load and render when page opens
+    // On page load
     loadSavedData();
     renderTable();
   </script>
