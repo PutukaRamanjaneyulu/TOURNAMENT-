@@ -69,6 +69,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: 0.3s ease;
+      margin: 5px;
     }
 
     button:hover {
@@ -92,16 +93,17 @@
       </tr>
     </thead>
     <tbody id="table-body">
-      <!-- JS inserts rows here -->
+      <!-- Rows inserted by JS -->
     </tbody>
   </table>
 
   <div class="btn-container">
     <button onclick="applyUpdates()">Update & Sort</button>
+    <button onclick="saveChanges()">Save Changes</button>
   </div>
 
   <script>
-    const teams = [
+    let teams = [
       { name: "VISHNU NANI ESP", kills: 30, matches: 6, booyah: 10, topPlace: 1, total: 83 },
       { name: "TEAM RITHVIKA", kills: 23, matches: 5, booyah: 8, topPlace: 2, total: 59 },
       { name: "VFX × PRIME", kills: 23, matches: 5, booyah: 7, topPlace: 3, total: 53 },
@@ -115,6 +117,16 @@
       { name: "GBL ESPORTS", kills: 0, matches: 0, booyah: 0, topPlace: 11, total: 0 },
       { name: "VATTAKUKKALI TEAM", kills: 0, matches: 0, booyah: 0, topPlace: 12, total: 0 }
     ];
+
+    function loadSavedData() {
+      const saved = localStorage.getItem("savedTeams");
+      if (saved) {
+        const savedTeams = JSON.parse(saved);
+        if (Array.isArray(savedTeams)) {
+          teams = savedTeams;
+        }
+      }
+    }
 
     function renderTable() {
       const tbody = document.getElementById("table-body");
@@ -144,7 +156,6 @@
         team.total = parseInt(document.getElementById(`total-${i}`).value) || 0;
       });
 
-      // Sort by total points, then kills
       teams.sort((a, b) => {
         if (b.total !== a.total) return b.total - a.total;
         return b.kills - a.kills;
@@ -153,6 +164,14 @@
       renderTable();
     }
 
+    function saveChanges() {
+      applyUpdates(); // update latest data
+      localStorage.setItem("savedTeams", JSON.stringify(teams));
+      alert("Changes saved successfully!");
+    }
+
+    // Load and render when page opens
+    loadSavedData();
     renderTable();
   </script>
 </body>
